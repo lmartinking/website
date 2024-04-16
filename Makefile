@@ -1,15 +1,9 @@
 IMG_NAME := website
 
-ifeq ($(shell command -v podman 2> /dev/null),)
-    CMD=docker
-else
-    CMD=podman
-endif
-
 
 .PHONY: website
 website: content
-	$(CMD) build -t $(IMG_NAME) .
+	podman build -t $(IMG_NAME) .
 
 
 content/css/normalize.css:
