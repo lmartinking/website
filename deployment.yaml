@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: website
+  template:
+    metadata:
+      labels:
+        app: website
+    spec:
+      containers:
+        - name: website-container
+          image: "ghcr.io/lmartinking/website:latest"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: website-service
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    app: website
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: website-ingress
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: irrationalidiom.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: website-service
+                port:
+                  number: 80
