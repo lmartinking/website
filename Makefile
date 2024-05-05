@@ -13,3 +13,7 @@ content/css/normalize.css:
 .PHONY: fmt
 fmt:
 	./caddy fmt --overwrite Caddyfile
+
+.PHONY: run
+run:
+	podman run --rm -p 8080:80 $(IMG_NAME)
